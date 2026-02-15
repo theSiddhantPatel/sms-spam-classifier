@@ -1,0 +1,41 @@
+# Virtual environment
+ml_env/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Kaggle cache
+.cache/
+
+# Large data files (optional)
+*.csv
+*.zip
+
+# Environment variables
+.env
+
+
+# remove extra data files
+data/
+
+
+spam-detection.ipynb
+learn_kaggle.ipynb
+deployment_process.ipynb
+
+deploy.the_model.txt
+app2.py

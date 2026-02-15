@@ -1,0 +1,25 @@
+To deploy on Render, you need:
+
+Trained model and save it as .pkl file
+
+Flask app file (app.py)
+
+requirements.txt
+
+render.yaml (optional but clean)
+
+Push to GitHub
+
+Connect GitHub repo to Render
+
+
+
+
+STep 1:  
+import pickle
+pickle.dump(model, open("model.pkl", "wb"))
+pickle.dump(tfidf, open("vectorizer.pkl", "wb"))
+
+# add the above lines to the end of your notebook after training the model and fitting the vectorizer.
+#  This will save both the trained model and the vectorizer to disk, 
+# allowing you to load them later for making predictions on new data.

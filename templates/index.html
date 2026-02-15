@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Spam Detector</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        background: white;
+        padding: 40px;
+        width: 400px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      textarea {
+        width: 100%;
+        height: 100px;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        resize: none;
+        font-size: 14px;
+      }
+
+      button {
+        margin-top: 15px;
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        background-color: #667eea;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        background-color: #5a67d8;
+      }
+
+      .result {
+        margin-top: 20px;
+        font-weight: bold;
+        font-size: 18px;
+      }
+
+      .spam {
+        color: red;
+      }
+
+      .not-spam {
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>SMS Spam Classifier</h1>
+
+      <form id="spamForm">
+        <textarea
+          id="message"
+          placeholder="Paste your message here..."
+        ></textarea>
+        <button type="submit">Check</button>
+      </form>
+
+      <div class="result" id="result"></div>
+    </div>
+
+    <script>
+      const form = document.getElementById("spamForm");
+      const resultDiv = document.getElementById("result");
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const message = document.getElementById("message").value;
+
+        const response = await fetch("/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message: message }),
+        });
+
+        const data = await response.json();
+
+        if (data.prediction === "Spam") {
+          resultDiv.innerHTML = "🚨 This is SPAM!";
+          resultDiv.className = "result spam";
+        } else {
+          resultDiv.innerHTML = "✅ This is NOT Spam";
+          resultDiv.className = "result not-spam";
+        }
+      });
+
+      let hideTimer = null; // store timeout reference
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const message = document.getElementById("message").value;
+
+        const response = await fetch("/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message: message }),
+        });
+
+        const data = await response.json();
+
+        if (data.prediction === "Spam") {
+          resultDiv.innerHTML = "🚨 This is SPAM!";
+          resultDiv.className = "result spam";
+        } else {
+          resultDiv.innerHTML = "✅ This is NOT Spam";
+          resultDiv.className = "result not-spam";
+        }
+
+        // Clear old timer if exists
+        if (hideTimer) {
+          clearTimeout(hideTimer);
+        }
+
+        // Show result
+        resultDiv.style.display = "block";
+
+        // Start new timer
+        hideTimer = setTimeout(() => {
+          resultDiv.style.display = "none";
+        }, 3500);
+      });
+    </script>
+  </body>
+</html>
